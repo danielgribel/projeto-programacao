@@ -1,0 +1,109 @@
+\documentclass[10pt]{article}
+
+\usepackage[a4paper, total={6in, 9in}]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{graphicx}
+
+\setlength{\parskip}{0.2cm plus4mm minus3mm}
+
+\title{\textbf{A framework to solve clustering problems through metaheuristics}}
+\author{Daniel Lemes Gribel}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+%especificação do programa
+% - objetivos, requisitos
+% - especificação, por exemplo use-cases.
+
+%projeto do programa
+% - arquitetura
+% - critérios de projeto utilizados
+% - diagramas de arquitetura e/ou segmentação do programa, por exemplo UML.
+% - organização do programa (componentes, módulos, classes,...), por exemplo diagramas de classe UML.
+% - diagramas de organização dos dados, por exemplo diagramas de modelagem de dados, ou entidade e relacionamentos.
+
+%código fonte cuidadosamente comentado
+% - comentário inicial de cada módulo, identificando o autor
+% - comentários cabeçalho de módulos, classes e funções
+% - assertivas para dados e procedimentos, procure utilizar design by contract
+% - pseudo instruções
+% - procure estabelecer e/ou adotar padrões de programação. Os apêndices do livro Staa, A.v.; Programação Modular, Campus 2000; contêm uma extensa lista de padrões de programação que pode servir de exemplo para a adaptação às características específicas do trabalho.
+
+%roteiro de teste efetuado, composto de:
+% - critérios de teste utilizados
+% - descrição dos casos de teste
+% - na medida do possível procure utilizar testes automatizados
+% - scripts de teste automatizado
+% - logs gerados pelo teste automatizado
+
+%documentação para o usuário
+
+\section{Program specification}
+In this work, a system designed to help users in the task of clustering real data is proposed. The clustering task plays an important role in data mining, being useful in many fields as information retrieval, document extraction, image segmentation and in many domains that deal with exploratory data analysis, as medicine, engineering, logistics and biology.
+
+In this system, users specify some desired parameters -- as the dataset, the kind of solver (which defines the clustering objective function), the number of desired clusters -- and the system delivers a solution for the clustering problem.
+
+\subsection{Objective}
+The main goal of this project is to provide a tool that supports datasets from different domains and delivers a good clustering solution according to parameters and objectives defined by the user. Thus, we propose a robust framework with components that can be activated according to user-defined specifications, meeting in its core a genetic algorithm to solve the clustering problem. To our knowledge, only few genetic algorithms were proposed for this purpose. The final output must display the quality of the found solution (its cost) and a metric that indicates its accuracy when compared to the real classification (labels).
+
+\subsection{Requirements}
+
+\subsubsection{Functional requirements}
+
+\begin{enumerate}
+	\item The user should insert the number of desired clusters (groups).
+
+	\item The user should specify the desired solver.
+
+	\item The system should support an user own dataset, provided that it met the formatting specifications (csv file).
+	
+	\item The program must deliver a solution where each point (element) of the dataset is assigned to exactly  one cluster (group).
+
+	\item The program must display the total cost of the generated solution.
+
+	\item When applicable, i.e., when the dataset provides the labels, the program must display a metric that indicates the accuracy of the generated solution when compared to the real classification (labels).
+\end{enumerate}
+
+\subsubsection{Non-functional requirements}
+
+\begin{enumerate}
+	\item The total number of iterations inside the main loop of the program must not exceed 2000 iterations.
+
+	\item The number of iterations without improvement inside the main loop of the program must not exceed 500 iterations.
+
+	\item The solution cost delivered by the program must be displayed in a 15-decimal precision.
+
+	%\item Time limit requirements?
+\end{enumerate}
+
+\section{Project}
+
+\subsection{Structural modelling}
+Figure \ref{fig:class-diag} represents the classes considered in the system. For a selected dataset, an object of class \verb+Instance+ is created. It represents the properties of a dataset and defines its structure, by storing the number of elements, number of clusters, number of dimensions (attributes) for each point, etc. For each instance, an object of class \verb+DataFrame+ is associated. After the dataset loading, it stores some useful data, as a similarity matrix and a list of closest points.
+
+The \verb+Solver+ class is a super-class which is defined to solve the optimization (clustering) problem. Thus, it is associated to a space of points defined in \verb+DataFrame+ and stores a solution, its cost, and the cardinality of each cluster (group) of the solution.
+
+From the project criteria perspective, we can observe that \textbf{inheritance} and \textbf{polymorphism} were adopted in the module that defines the solvers. Thus, methods \verb+localSearch()+ and \verb+calculateCost()+ have their own implementation on each class that has \verb+Solver+ as a super-class. Analogously, methods \verb+calculateNewCentroids()+, \verb+calculateNewCentroidsSwap()+, \verb+createCenters()+, \verb+relocate()+ and \verb+swap()+ have their own implementation on each class that inherits \verb+KCenterSolver+.
+
+\begin{figure}[!htbp]
+	\centering
+	\includegraphics[width=1\textwidth]{img/class-diag.pdf}
+	\caption{Classes diagram}
+	\label{fig:class-diag}
+\end{figure}
+
+\section{Source code documentation}
+Please, see the source files placed in the same folder of this document.
+
+\noindent Alternatively, access: \url{https://github.com/danielgribel/clustering}.
+
+\section{Tests}
+
+\section{User documentation}
+
+\end{document}
